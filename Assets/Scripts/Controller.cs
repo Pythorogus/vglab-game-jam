@@ -66,6 +66,7 @@ public class Controller : MonoBehaviour
         versusLife += word.versusValue;
         platformLife += word.platformValue;
         racingLife += word.racingValue;
+        StateController.selectedWords.Add(word);
         PrintLife();
         ResetRandomWords();
         ResetTimer();
