@@ -23,7 +23,7 @@ public class Controller : MonoBehaviour
     {
         Shuffle(GetWordList());
         PrintLife();
-        SetRandomWords();
+        InitRandomWords();
         button1.onClick.AddListener(() => OnWordClick());
         button2.onClick.AddListener(() => OnWordClick(1));
         button3.onClick.AddListener(() => OnWordClick(2));
@@ -35,6 +35,7 @@ public class Controller : MonoBehaviour
         {
             timer -= Time.deltaTime;
         } else {
+            ResetRandomWords();
             ResetTimer();
             PrintLife();
         }
@@ -46,7 +47,7 @@ public class Controller : MonoBehaviour
         }
     }
 
-    void SetRandomWords(){
+    void InitRandomWords(){
         if(wordIndex >= GetWordList().Count){ ResetWords(); }
         button1.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = GetWordList()[wordIndex].label;
         if(wordIndex+1 >= GetWordList().Count){ ResetWords(); }
@@ -55,15 +56,18 @@ public class Controller : MonoBehaviour
         button3.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = GetWordList()[wordIndex+2].label;
     }
 
+    void ResetRandomWords(){
+        wordIndex += 3;
+        InitRandomWords();
+    }
+
     void OnWordClick(int wordIndexIncrement = 0){
         Word word = GetWordList()[wordIndex + wordIndexIncrement];
         versusLife += word.versusValue;
         platformLife += word.platformValue;
         racingLife += word.racingValue;
         PrintLife();
-
-        wordIndex += 3;
-        SetRandomWords();
+        ResetRandomWords();
         ResetTimer();
     }
 
