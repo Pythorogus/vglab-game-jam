@@ -28,6 +28,8 @@ public class Controller : MonoBehaviour
         button1.onClick.AddListener(() => OnWordClick());
         button2.onClick.AddListener(() => OnWordClick(1));
         button3.onClick.AddListener(() => OnWordClick(2));
+        StartCoroutine(FadeAudioSource.StartFade(SoundController.instance.music2, 2f, 1f));
+        Debug.Log(SoundController.instance.music2.volume);
     }
 
     void Update()

@@ -12,7 +12,6 @@ public class GameOverController : MonoBehaviour
         int totalVersus = 0;
         int totalPlatform = 0;
         int totalRacing = 0;
-        Debug.Log(StateController.selectedWords.Count);
         StateController.selectedWords.ForEach(delegate(Word word){
             gameName += word.label + " ";
             totalVersus += word.versusValue;
@@ -37,10 +36,17 @@ public class GameOverController : MonoBehaviour
         GameObject.Find("GameName").GetComponent<TMPro.TextMeshProUGUI>().text = gameName;
 
         StateController.selectedWords.Clear();
+
+        StartCoroutine(FadeAudioSource.StartFade(SoundController.instance.music2, 2f, 0));
     }
 
     public void Retry()
     {
         SceneManager.LoadScene("Play");
+    }
+
+    public void Menu()
+    {
+        SceneManager.LoadScene("Start");
     }
 }

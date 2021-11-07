@@ -15,4 +15,9 @@ public class StartController : MonoBehaviour
     {
         SceneManager.LoadScene("Play");
     }
+
+    public void Tutorial()
+    {
+        SceneManager.LoadScene("Tutorial");
+    }
 }
