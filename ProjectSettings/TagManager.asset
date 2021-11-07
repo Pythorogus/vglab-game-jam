@@ -8,11 +8,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Background
   - Water
   - UI
-  - Background
-  - 
+  - Men
+  - Front
   - 
   - 
   - 
@@ -41,3 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: UI
+    uniqueID: 1124287861
+    locked: 0
+  - name: Background
+    uniqueID: 2935623603
+    locked: 0
+  - name: Men
+    uniqueID: 2294028229
+    locked: 0
+  - name: Front
+    uniqueID: 2447390249
+    locked: 1
