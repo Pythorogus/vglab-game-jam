@@ -8,7 +8,7 @@ public class TutoController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(FadeAudioSource.StartFade(SoundController.instance.music2, 2f, 0));
+        StartCoroutine(FadeAudioSource.StartFade(SoundController.instance.music2, 1f, 0));
     }
 
     public void Menu()

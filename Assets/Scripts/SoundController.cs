@@ -10,21 +10,18 @@ public class SoundController : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("AWAKE SOUND CONTROLLER");
         if(SoundController.instance == null) {
             DontDestroyOnLoad(this);
             SoundController.instance = this;
         } else {
             Destroy(gameObject);
         }
-        Debug.Log("AFTER DESTROY");
 
         SoundController.instance.music2.volume = 0;
     }
 
     void Start()
     {
-        Debug.Log("START SOUND CONTROLLER");
         PlayMusic();
     }
 

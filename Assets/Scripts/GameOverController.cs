@@ -37,7 +37,7 @@ public class GameOverController : MonoBehaviour
 
         StateController.selectedWords.Clear();
 
-        StartCoroutine(FadeAudioSource.StartFade(SoundController.instance.music2, 2f, 0));
+        StartCoroutine(FadeAudioSource.StartFade(SoundController.instance.music2, 1f, 0));
     }
 
     public void Retry()
