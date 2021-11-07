@@ -96,9 +96,9 @@ public class Controller : MonoBehaviour
 
     void PrintLife()
     {
-        versusLifePrint.GetComponent<TMPro.TextMeshProUGUI>().text = string.Format("{0:0.00}",versusLife);
-        platformLifePrint.GetComponent<TMPro.TextMeshProUGUI>().text = string.Format("{0:0.00}",platformLife);
-        racingLifePrint.GetComponent<TMPro.TextMeshProUGUI>().text = string.Format("{0:0.00}",racingLife);
+        versusLifePrint.GetComponent<TMPro.TextMeshProUGUI>().text = string.Format("{0}",versusLife);
+        platformLifePrint.GetComponent<TMPro.TextMeshProUGUI>().text = string.Format("{0}",platformLife);
+        racingLifePrint.GetComponent<TMPro.TextMeshProUGUI>().text = string.Format("{0}",racingLife);
     }
 
     void PrintTimer()
