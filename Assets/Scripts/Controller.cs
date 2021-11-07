@@ -80,6 +80,9 @@ public class Controller : MonoBehaviour
         PrintLife();
         ResetRandomWords();
         ResetTimer();
+
+        AudioClip sound = (AudioClip) Resources.Load("Sounds/Voices/action");
+        SoundController.instance.voice.PlayOneShot(sound);
     }
 
     void ResetWords(){

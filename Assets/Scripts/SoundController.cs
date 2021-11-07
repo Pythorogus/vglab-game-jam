@@ -7,6 +7,7 @@ public class SoundController : MonoBehaviour
     public static SoundController instance;
     public AudioSource music1;
     public AudioSource music2;
+    public AudioSource voice;
 
     void Awake()
     {
