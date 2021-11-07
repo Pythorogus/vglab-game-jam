@@ -16,6 +16,7 @@ public class Controller : MonoBehaviour
     public GameObject platformLifePrint;
     public GameObject racingLifePrint;
     public Button button1, button2, button3;
+    int maxLife = 6;
     float timer = 5;
     int wordIndex = 0;
 
@@ -37,6 +38,10 @@ public class Controller : MonoBehaviour
         } else {
             ResetRandomWords();
             ResetTimer();
+            versusLife -= decrement;
+            platformLife -= decrement;
+            racingLife -= decrement;
+            
             PrintLife();
         }
         
@@ -63,9 +68,13 @@ public class Controller : MonoBehaviour
 
     void OnWordClick(int wordIndexIncrement = 0){
         Word word = GetWordList()[wordIndex + wordIndexIncrement];
-        versusLife += word.versusValue;
-        platformLife += word.platformValue;
-        racingLife += word.racingValue;
+        var versusLifeSum = versusLife + word.versusValue - decrement;
+        versusLife = versusLifeSum <= maxLife ? versusLifeSum : maxLife;
+        var platformLifeSum = platformLife + word.platformValue - decrement;
+        platformLife = platformLifeSum <= maxLife ? platformLifeSum : maxLife;;
+        var racingLifeSum = racingLife + word.racingValue - decrement;
+        racingLife = racingLifeSum <= maxLife ? racingLifeSum : maxLife;
+
         StateController.selectedWords.Add(word);
         PrintLife();
         ResetRandomWords();
@@ -79,9 +88,6 @@ public class Controller : MonoBehaviour
 
     void ResetTimer(){
         timer = 5;
-        versusLife -= decrement;
-        platformLife -= decrement;
-        racingLife -= decrement;
     }
 
     void PrintLife()

@@ -8,7 +8,7 @@ public class GameOverController : MonoBehaviour
     string gameName = "";
     void Start()
     {
-        string lastWord = "Simulator";
+        string lastWord = "";
         int totalVersus = 0;
         int totalPlatform = 0;
         int totalRacing = 0;
@@ -35,6 +35,8 @@ public class GameOverController : MonoBehaviour
         gameName += lastWord;
         
         GameObject.Find("GameName").GetComponent<TMPro.TextMeshProUGUI>().text = gameName;
+
+        StateController.selectedWords.Clear();
     }
 
     public void Retry()
