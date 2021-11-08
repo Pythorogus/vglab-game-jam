@@ -16,7 +16,7 @@ public class Controller : MonoBehaviour
     public GameObject platformLifePrint;
     public GameObject racingLifePrint;
     public Button button1, button2, button3;
-    int maxLife = 6;
+    int maxLife = 3;
     float timer = 5;
     int wordIndex = 0;
 
@@ -28,7 +28,7 @@ public class Controller : MonoBehaviour
         button1.onClick.AddListener(() => OnWordClick());
         button2.onClick.AddListener(() => OnWordClick(1));
         button3.onClick.AddListener(() => OnWordClick(2));
-        StartCoroutine(FadeAudioSource.StartFade(SoundController.instance.music2, 1f, 1f));
+        StartCoroutine(FadeAudioSource.StartFade(SoundController.instance.music2, 1f, 0.4f));
     }
 
     void Update()
@@ -37,6 +37,8 @@ public class Controller : MonoBehaviour
         {
             timer -= Time.deltaTime;
         } else {
+            AudioClip sound = (AudioClip) Resources.Load("Sounds/losetime");
+            SoundController.instance.sound.PlayOneShot(sound);
             ResetRandomWords();
             ResetTimer();
             versusLife -= decrement;
@@ -49,6 +51,9 @@ public class Controller : MonoBehaviour
         PrintTimer();
 
         if(versusLife <= 0 || platformLife <= 0 || racingLife <= 0){
+            SoundController.instance.voice.Stop();
+            AudioClip sound = (AudioClip) Resources.Load("Sounds/gameover");
+            SoundController.instance.sound.PlayOneShot(sound);
             SceneManager.LoadScene("GameOver");
         }
     }
@@ -81,8 +86,10 @@ public class Controller : MonoBehaviour
         ResetRandomWords();
         ResetTimer();
 
-        AudioClip sound = (AudioClip) Resources.Load("Sounds/Voices/action");
-        SoundController.instance.voice.PlayOneShot(sound);
+        if(versusLife > 0 || platformLife > 0 || racingLife > 0){
+            AudioClip sound = (AudioClip) Resources.Load("Sounds/Voices/" + word.label.ToLower().Replace(" ", "").Replace("-", ""));
+            SoundController.instance.voice.PlayOneShot(sound);
+        }
     }
 
     void ResetWords(){

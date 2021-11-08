@@ -8,6 +8,7 @@ public class SoundController : MonoBehaviour
     public AudioSource music1;
     public AudioSource music2;
     public AudioSource voice;
+    public AudioSource sound;
 
     void Awake()
     {
@@ -18,6 +19,7 @@ public class SoundController : MonoBehaviour
             Destroy(gameObject);
         }
 
+        SoundController.instance.music1.volume = 0.4f;
         SoundController.instance.music2.volume = 0;
     }
 

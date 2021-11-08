@@ -13,6 +13,9 @@ public class StartController : MonoBehaviour
 
     public void Play()
     {
+        AudioClip sound = (AudioClip) Resources.Load("Sounds/select");
+        SoundController.instance.sound.PlayOneShot(sound);
+
         SceneManager.LoadScene("Play");
     }
 
