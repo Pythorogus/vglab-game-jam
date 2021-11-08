@@ -16,7 +16,7 @@ public class StartController : MonoBehaviour
         AudioClip sound = (AudioClip) Resources.Load("Sounds/select");
         SoundController.instance.sound.PlayOneShot(sound);
 
-        SceneManager.LoadScene("Play");
+        SceneManager.LoadScene("Tuto");
     }
 
     public void Tutorial()

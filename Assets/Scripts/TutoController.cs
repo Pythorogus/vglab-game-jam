@@ -11,8 +11,10 @@ public class TutoController : MonoBehaviour
         StartCoroutine(FadeAudioSource.StartFade(SoundController.instance.music2, 1f, 0));
     }
 
-    public void Menu()
+    public void Play()
     {
-        SceneManager.LoadScene("Start");
+        AudioClip sound = (AudioClip) Resources.Load("Sounds/select");
+        SoundController.instance.sound.PlayOneShot(sound);
+        SceneManager.LoadScene("Play");
     }
 }
