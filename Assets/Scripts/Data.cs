@@ -19,7 +19,7 @@ public class Data : MonoBehaviour
     {
         try
         {
-            using(StreamReader strReader = new StreamReader("Assets/data.csv"))
+            using(StreamReader strReader = new StreamReader(Application.streamingAssetsPath + "/data.csv"))
             {
                 bool endOfFile = false;
                 bool firstLoop = true;
