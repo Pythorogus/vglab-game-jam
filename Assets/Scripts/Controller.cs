@@ -132,6 +132,7 @@ public class Controller : MonoBehaviour
 
     void PlayManAnimation(Man man, int value)
     {
+        Debug.Log("GO!");
         switch(value){
             case 0 :
                 man.PlayDislikeAnimation();
