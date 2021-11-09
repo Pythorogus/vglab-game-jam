@@ -20,6 +20,10 @@ public class Controller : MonoBehaviour
     float timer = 5;
     int wordIndex = 0;
 
+    public Man racing_man;
+    public Man versus_man;
+    public Man platform_man;
+
     void Start()
     {
         Shuffle(GetWordList());
@@ -72,16 +76,24 @@ public class Controller : MonoBehaviour
         InitRandomWords();
     }
 
-    void OnWordClick(int wordIndexIncrement = 0){
+    void OnWordClick(int wordIndexIncrement = 0)
+    {
         Word word = GetWordList()[wordIndex + wordIndexIncrement];
-        var versusLifeSum = versusLife + word.versusValue - decrement;
-        versusLife = versusLifeSum <= maxLife ? versusLifeSum : maxLife;
-        var platformLifeSum = platformLife + word.platformValue - decrement;
-        platformLife = platformLifeSum <= maxLife ? platformLifeSum : maxLife;;
+        
         var racingLifeSum = racingLife + word.racingValue - decrement;
         racingLife = racingLifeSum <= maxLife ? racingLifeSum : maxLife;
+        PlayManAnimation(racing_man, word.racingValue);
+        
+        var versusLifeSum = versusLife + word.versusValue - decrement;
+        versusLife = versusLifeSum <= maxLife ? versusLifeSum : maxLife;
+        PlayManAnimation(versus_man, word.versusValue);
+
+        var platformLifeSum = platformLife + word.platformValue - decrement;
+        platformLife = platformLifeSum <= maxLife ? platformLifeSum : maxLife;
+        PlayManAnimation(platform_man, word.platformValue);
 
         StateController.selectedWords.Add(word);
+        
         PrintLife();
         ResetRandomWords();
         ResetTimer();
@@ -116,6 +128,26 @@ public class Controller : MonoBehaviour
     List<Word> GetWordList()
     {
         return data.GetComponent<Data>().wordList;
+    }
+
+    void PlayManAnimation(Man man, int value)
+    {
+        switch(value){
+            case 0 :
+                man.PlayDislikeAnimation();
+                break;
+            case 1 :
+                man.PlayOkAnimation();
+                break;
+            case 2 :
+                man.PlayLikeAnimation();
+                break;
+            case 3 :
+                man.PlayLoveAnimation();
+                break;
+            default:
+                break;
+        }
     }
 
     void Shuffle<T>(List<T> list)
