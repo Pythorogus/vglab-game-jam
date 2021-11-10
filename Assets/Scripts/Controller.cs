@@ -23,6 +23,9 @@ public class Controller : MonoBehaviour
     public Man racing_man;
     public Man versus_man;
     public Man platform_man;
+    public Reaction racing_man_reaction;
+    public Reaction versus_man_reaction;
+    public Reaction platform_man_reaction;
 
     void Start()
     {
@@ -82,15 +85,15 @@ public class Controller : MonoBehaviour
         
         var racingLifeSum = racingLife + word.racingValue - decrement;
         racingLife = racingLifeSum <= maxLife ? racingLifeSum : maxLife;
-        PlayManAnimation(racing_man, word.racingValue);
+        PlayManAnimation(racing_man, racing_man_reaction, word.racingValue, 0);
         
         var versusLifeSum = versusLife + word.versusValue - decrement;
         versusLife = versusLifeSum <= maxLife ? versusLifeSum : maxLife;
-        PlayManAnimation(versus_man, word.versusValue);
+        PlayManAnimation(versus_man, versus_man_reaction, word.versusValue, 0.25f);
 
         var platformLifeSum = platformLife + word.platformValue - decrement;
         platformLife = platformLifeSum <= maxLife ? platformLifeSum : maxLife;
-        PlayManAnimation(platform_man, word.platformValue);
+        PlayManAnimation(platform_man, platform_man_reaction, word.platformValue, 0.5f);
 
         StateController.selectedWords.Add(word);
         
@@ -130,21 +133,24 @@ public class Controller : MonoBehaviour
         return data.GetComponent<Data>().wordList;
     }
 
-    void PlayManAnimation(Man man, int value)
+    void PlayManAnimation(Man man, Reaction reaction, int value, float delay)
     {
-        Debug.Log("GO!");
         switch(value){
             case 0 :
-                man.PlayDislikeAnimation();
+                man.PlayDislikeAnimation(delay);
+                reaction.PlayDislikeAnimation(delay);
                 break;
             case 1 :
-                man.PlayOkAnimation();
+                man.PlayOkAnimation(delay);
+                reaction.PlayOkAnimation(delay);
                 break;
             case 2 :
-                man.PlayLikeAnimation();
+                man.PlayLikeAnimation(delay);
+                reaction.PlayLikeAnimation(delay);
                 break;
             case 3 :
-                man.PlayLoveAnimation();
+                man.PlayLoveAnimation(delay);
+                reaction.PlayLoveAnimation(delay);
                 break;
             default:
                 break;

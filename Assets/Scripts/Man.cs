@@ -12,23 +12,30 @@ public class Man : MonoBehaviour
         
     }
 
-    public void PlayDislikeAnimation()
+    public void PlayDislikeAnimation(float delay)
     {
-        animator.SetTrigger("dislike");
+        StartCoroutine(Anim("dislike", delay));
     }
 
-    public void PlayOkAnimation()
+    public void PlayOkAnimation(float delay)
     {
-        animator.SetTrigger("like");
+        
     }
 
-    public void PlayLikeAnimation()
+    public void PlayLikeAnimation(float delay)
     {
-        animator.SetTrigger("like");
+        StartCoroutine(Anim("like", delay));
     }
 
-    public void PlayLoveAnimation()
+    public void PlayLoveAnimation(float delay)
     {
-        animator.SetTrigger("like");
+        StartCoroutine(Anim("like", delay));
+    }
+
+    IEnumerator Anim(string trigger, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        animator.SetTrigger(trigger);
+        yield return null;
     }
 }
