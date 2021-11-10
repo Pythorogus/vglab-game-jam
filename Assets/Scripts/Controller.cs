@@ -10,27 +10,29 @@ public class Controller : MonoBehaviour
     public float platformLife;
     public float racingLife;
     public float decrement;
+    public GameObject racingHearts;
+    public GameObject versusHearts;
+    public GameObject platformHearts;
     public GameObject data;
     public GameObject timerPrint;
-    public GameObject versusLifePrint;
-    public GameObject platformLifePrint;
-    public GameObject racingLifePrint;
     public Button button1, button2, button3;
     int maxLife = 3;
     float timer = 5;
     int wordIndex = 0;
-
     public Man racing_man;
     public Man versus_man;
     public Man platform_man;
+    public SalesMan sales_man;
     public Reaction racing_man_reaction;
     public Reaction versus_man_reaction;
     public Reaction platform_man_reaction;
+    public GameObject wordButtons;
+    public GameObject wordResult;
+    public GameObject timerObject;
 
     void Start()
     {
         Shuffle(GetWordList());
-        PrintLife();
         InitRandomWords();
         button1.onClick.AddListener(() => OnWordClick());
         button2.onClick.AddListener(() => OnWordClick(1));
@@ -50,9 +52,10 @@ public class Controller : MonoBehaviour
             ResetTimer();
             versusLife -= decrement;
             platformLife -= decrement;
-            racingLife -= decrement;
-            
-            PrintLife();
+            racingLife -= decrement;      
+            AdaptHearts(racingHearts,racingLife) ;
+            AdaptHearts(versusHearts,versusLife) ;
+            AdaptHearts(platformHearts,platformLife) ;
         }
         
         PrintTimer();
@@ -81,46 +84,27 @@ public class Controller : MonoBehaviour
 
     void OnWordClick(int wordIndexIncrement = 0)
     {
-        Word word = GetWordList()[wordIndex + wordIndexIncrement];
-        
-        var racingLifeSum = racingLife + word.racingValue - decrement;
-        racingLife = racingLifeSum <= maxLife ? racingLifeSum : maxLife;
-        PlayManAnimation(racing_man, racing_man_reaction, word.racingValue, 0);
-        
-        var versusLifeSum = versusLife + word.versusValue - decrement;
-        versusLife = versusLifeSum <= maxLife ? versusLifeSum : maxLife;
-        PlayManAnimation(versus_man, versus_man_reaction, word.versusValue, 0.25f);
-
-        var platformLifeSum = platformLife + word.platformValue - decrement;
-        platformLife = platformLifeSum <= maxLife ? platformLifeSum : maxLife;
-        PlayManAnimation(platform_man, platform_man_reaction, word.platformValue, 0.5f);
-
-        StateController.selectedWords.Add(word);
-        
-        PrintLife();
-        ResetRandomWords();
-        ResetTimer();
-
-        if(versusLife > 0 || platformLife > 0 || racingLife > 0){
-            AudioClip sound = (AudioClip) Resources.Load("Sounds/Voices/" + word.label.ToLower().Replace(" ", "").Replace("-", ""));
-            SoundController.instance.voice.PlayOneShot(sound);
-        }
+        StartCoroutine(WordSequence(wordIndexIncrement));
     }
 
-    void ResetWords(){
-        wordIndex = 0;
-        Shuffle(GetWordList());
+    void DisableTimer()
+    {
+        timerObject.SetActive(false);
+    }
+
+    void EnableTimer()
+    {
+        ResetTimer();
+        timerObject.SetActive(true);
     }
 
     void ResetTimer(){
         timer = 5;
     }
 
-    void PrintLife()
-    {
-        versusLifePrint.GetComponent<TMPro.TextMeshProUGUI>().text = string.Format("{0}",versusLife);
-        platformLifePrint.GetComponent<TMPro.TextMeshProUGUI>().text = string.Format("{0}",platformLife);
-        racingLifePrint.GetComponent<TMPro.TextMeshProUGUI>().text = string.Format("{0}",racingLife);
+    void ResetWords(){
+        wordIndex = 0;
+        Shuffle(GetWordList());
     }
 
     void PrintTimer()
@@ -164,6 +148,70 @@ public class Controller : MonoBehaviour
             int randomIndex = Random.Range(i, list.Count);
             list[i] = list[randomIndex];
             list[randomIndex] = current;
+        }
+    }
+
+    IEnumerator WordSequence(int wordIndexIncrement)
+    {
+        Word word = GetWordList()[wordIndex + wordIndexIncrement];
+
+        wordButtons.SetActive(false);
+        wordResult.GetComponent<TMPro.TextMeshProUGUI>().text = word.label;
+        wordResult.SetActive(true);
+        DisableTimer();
+
+        sales_man.PlayShowAnimation(0);
+
+        if(versusLife > 0 || platformLife > 0 || racingLife > 0){
+            AudioClip sound = (AudioClip) Resources.Load("Sounds/Voices/" + word.label.ToLower().Replace(" ", "").Replace("-", ""));
+            SoundController.instance.voice.PlayOneShot(sound);
+        }
+
+        yield return new WaitForSeconds(1f);
+        
+        var racingLifeSum = racingLife + word.racingValue - decrement;
+        racingLife = racingLifeSum <= maxLife ? racingLifeSum : maxLife;
+        AdaptHearts(racingHearts, racingLife);
+        PlayManAnimation(racing_man, racing_man_reaction, word.racingValue, 0);
+        
+        var versusLifeSum = versusLife + word.versusValue - decrement;
+        versusLife = versusLifeSum <= maxLife ? versusLifeSum : maxLife;
+        AdaptHearts(versusHearts, versusLife);
+        PlayManAnimation(versus_man, versus_man_reaction, word.versusValue, 0.25f);
+
+        var platformLifeSum = platformLife + word.platformValue - decrement;
+        platformLife = platformLifeSum <= maxLife ? platformLifeSum : maxLife;
+        AdaptHearts(platformHearts, platformLife);
+        PlayManAnimation(platform_man, platform_man_reaction, word.platformValue, 0.5f);
+
+        StateController.selectedWords.Add(word);
+
+        ResetRandomWords();
+        
+        yield return new WaitForSeconds(1.5f);
+
+        wordButtons.SetActive(true);
+        wordResult.SetActive(false);
+        EnableTimer();
+    }
+
+    void AdaptHearts(GameObject hearts, float life)
+    {
+        switch (life) {
+            case 0 :
+                break;
+            case 1 :
+                hearts.transform.Find("heart2").transform.Find("heart_red").gameObject.SetActive(false);
+                hearts.transform.Find("heart3").transform.Find("heart_red").gameObject.SetActive(false);
+                break;
+            case 2 :
+                hearts.transform.Find("heart2").transform.Find("heart_red").gameObject.SetActive(true);
+                hearts.transform.Find("heart3").transform.Find("heart_red").gameObject.SetActive(false);
+                break;
+            case 3 :
+                hearts.transform.Find("heart2").transform.Find("heart_red").gameObject.SetActive(true);
+                hearts.transform.Find("heart3").transform.Find("heart_red").gameObject.SetActive(true);
+                break;
         }
     }
 }
