@@ -10,6 +10,7 @@ public class SoundController : MonoBehaviour
     public AudioSource voice;
     public AudioSource sound;
     public AudioSource reactionSound;
+    public AudioSource textSound;
 
     void Awake()
     {
