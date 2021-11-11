@@ -41,7 +41,7 @@ public class Reaction : MonoBehaviour
 
     public void PlayLoveAnimation(float delay)
     {
-        AudioClip sound = (AudioClip) Resources.Load("Sounds/reaction_high");
+        AudioClip sound = (AudioClip) Resources.Load("Sounds/reaction_mid");
         spriteRenderer.sprite = reactionArray[3];
         FadeIn(delay, sound);
     }

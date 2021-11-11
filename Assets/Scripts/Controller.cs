@@ -29,6 +29,7 @@ public class Controller : MonoBehaviour
     public GameObject wordButtons;
     public GameObject wordResult;
     public GameObject timerObject;
+    private bool GO_running = false;
 
     void Start()
     {
@@ -42,30 +43,43 @@ public class Controller : MonoBehaviour
 
     void Update()
     {
-        if (timer > 0)
-        {
-            timer -= Time.deltaTime;
-        } else {
-            AudioClip sound = (AudioClip) Resources.Load("Sounds/losetime");
-            SoundController.instance.sound.PlayOneShot(sound);
-            ResetRandomWords();
-            ResetTimer();
-            versusLife -= decrement;
-            platformLife -= decrement;
-            racingLife -= decrement;      
-            AdaptHearts(racingHearts,racingLife) ;
-            AdaptHearts(versusHearts,versusLife) ;
-            AdaptHearts(platformHearts,platformLife) ;
-        }
-        
-        PrintTimer();
+        if(timerObject.activeSelf){
+            if (timer > 0)
+            {
+                timer -= Time.deltaTime;
+            } else {
+                AudioClip sound = (AudioClip) Resources.Load("Sounds/reaction_low");
+                SoundController.instance.reactionSound.PlayOneShot(sound);
+                ResetRandomWords();
+                ResetTimer();
+                versusLife -= decrement;
+                platformLife -= decrement;
+                racingLife -= decrement;      
+                StartCoroutine(AdaptHearts(racingHearts,racingLife,"racing",0));
+                StartCoroutine(AdaptHearts(versusHearts,versusLife,"versus",0));
+                StartCoroutine(AdaptHearts(platformHearts,platformLife,"platform",0));
 
-        if(versusLife <= 0 || platformLife <= 0 || racingLife <= 0){
-            SoundController.instance.voice.Stop();
-            AudioClip sound = (AudioClip) Resources.Load("Sounds/gameover");
-            SoundController.instance.sound.PlayOneShot(sound);
-            SceneManager.LoadScene("GameOver");
+                if((versusLife <= 0 || platformLife <= 0 || racingLife <= 0) && GO_running == false){
+                    StartCoroutine(GameOver());
+                }
+            }
+            
+            PrintTimer();
         }
+    }
+
+    IEnumerator GameOver()
+    {
+        GO_running = true;
+        DisableTimer();
+        wordButtons.SetActive(false);
+        wordResult.SetActive(false);
+        SoundController.instance.voice.Stop();
+        AudioClip sound = (AudioClip) Resources.Load("Sounds/gameover");
+        SoundController.instance.sound.PlayOneShot(sound);
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("GameOver");
+        //GO_running = false;
     }
 
     void InitRandomWords(){
@@ -169,20 +183,23 @@ public class Controller : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
         
-        var racingLifeSum = racingLife + word.racingValue - decrement;
-        racingLife = racingLifeSum <= maxLife ? racingLifeSum : maxLife;
-        AdaptHearts(racingHearts, racingLife);
+        var racingLifeTemp = racingLife;
+        var racingLifeSum = racingLifeTemp + word.racingValue - decrement;
+        racingLifeTemp = racingLifeSum <= maxLife ? racingLifeSum : maxLife;
         PlayManAnimation(racing_man, racing_man_reaction, word.racingValue, 0);
+        StartCoroutine(AdaptHearts(racingHearts, racingLifeTemp, "racing", 0));
         
-        var versusLifeSum = versusLife + word.versusValue - decrement;
-        versusLife = versusLifeSum <= maxLife ? versusLifeSum : maxLife;
-        AdaptHearts(versusHearts, versusLife);
+        var versusLifeTemp = versusLife;
+        var versusLifeSum = versusLifeTemp + word.versusValue - decrement;
+        versusLifeTemp = versusLifeSum <= maxLife ? versusLifeSum : maxLife;
         PlayManAnimation(versus_man, versus_man_reaction, word.versusValue, 0.25f);
+        StartCoroutine(AdaptHearts(versusHearts, versusLifeTemp, "versus", 0.25f));
 
-        var platformLifeSum = platformLife + word.platformValue - decrement;
-        platformLife = platformLifeSum <= maxLife ? platformLifeSum : maxLife;
-        AdaptHearts(platformHearts, platformLife);
+        var platformLifeTemp = platformLife;
+        var platformLifeSum = platformLifeTemp + word.platformValue - decrement;
+        platformLifeTemp = platformLifeSum <= maxLife ? platformLifeSum : maxLife;
         PlayManAnimation(platform_man, platform_man_reaction, word.platformValue, 0.5f);
+        StartCoroutine(AdaptHearts(platformHearts, platformLifeTemp, "platform", 0.5f));
 
         StateController.selectedWords.Add(word);
 
@@ -190,27 +207,49 @@ public class Controller : MonoBehaviour
         
         yield return new WaitForSeconds(1.5f);
 
-        wordButtons.SetActive(true);
-        wordResult.SetActive(false);
-        EnableTimer();
+        if(!GO_running){
+            wordButtons.SetActive(true);
+            wordResult.SetActive(false);
+            EnableTimer();
+        }
     }
 
-    void AdaptHearts(GameObject hearts, float life)
+    IEnumerator AdaptHearts(GameObject hearts, float lifeTemp, string lifeType, float delay)
     {
-        switch (life) {
+        yield return new WaitForSeconds(delay);
+        var heartObject1 = hearts.transform.Find("heart1").transform.Find("heart_red").gameObject;
+        var heartObject2 = hearts.transform.Find("heart2").transform.Find("heart_red").gameObject;
+        var heartObject3 = hearts.transform.Find("heart3").transform.Find("heart_red").gameObject;
+        switch (lifeTemp) {
             case 0 :
+                heartObject1.SetActive(false);
+                heartObject2.SetActive(false);
+                heartObject3.SetActive(false);
+                StartCoroutine(GameOver());
                 break;
             case 1 :
-                hearts.transform.Find("heart2").transform.Find("heart_red").gameObject.SetActive(false);
-                hearts.transform.Find("heart3").transform.Find("heart_red").gameObject.SetActive(false);
+                heartObject2.SetActive(false);
+                heartObject3.SetActive(false);
                 break;
             case 2 :
-                hearts.transform.Find("heart2").transform.Find("heart_red").gameObject.SetActive(true);
-                hearts.transform.Find("heart3").transform.Find("heart_red").gameObject.SetActive(false);
+                heartObject2.SetActive(true);
+                heartObject3.SetActive(false);
                 break;
             case 3 :
-                hearts.transform.Find("heart2").transform.Find("heart_red").gameObject.SetActive(true);
-                hearts.transform.Find("heart3").transform.Find("heart_red").gameObject.SetActive(true);
+                heartObject2.SetActive(true);
+                heartObject3.SetActive(true);
+                break;
+        }
+        
+        switch(lifeType) {
+            case "racing" :
+                racingLife = lifeTemp;
+                break;
+            case "versus" :
+                versusLife = lifeTemp;
+                break;
+            case "platform" :
+                platformLife = lifeTemp;
                 break;
         }
     }
