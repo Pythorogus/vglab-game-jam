@@ -548,8 +548,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.26000002, y: 0.5}
   m_AnchorMax: {x: 0.26000002, y: 0.77111113}
-  m_AnchoredPosition: {x: -25.350006, y: -34.36}
-  m_SizeDelta: {x: 315.3, y: 222.72}
+  m_AnchoredPosition: {x: -37.134995, y: -76.659996}
+  m_SizeDelta: {x: 291.75, y: 153.32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1257790025
 MonoBehaviour:
@@ -571,18 +571,47 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "*Bruit d'alarme*\n\"Sh*t! Je vais etre en retard au taf!\"\nVous enfilez
-    votre veste, remplissez votre tasse et courrez vers le m\xE9tro.\n\nVotre manager
-    vous attrape le bras a peine passe la porte de l'open space.\n\n\"T'es bien dans
-    la vente, toi? Les trois clients sont la pour le jeu.\"\n\n\"Un jeu? Quel jeu?
-    Attendez, je...\"\n\nLe boss vous lance dans la salle de r\xE9union, face aux
-    trois businessmen.\n\nIl va falloir improviser un nom a l'arrache si vous voulez
-    cloturer fissa!\n\nVous allez devoir composer le nom de jeu le plus cool et le
-    plus long jamais imagine afin d'impressioner les distributeurs de jeux de Racing,
-    Versus Fighting et Plateforme.\n\nVous aurez un temps tres limite pour selectionner
-    un des 3 mots qui influenceront l'avis des businessmen. Le jeu s'arrete quand
-    un des 3 clients a perdu tout interet pour le nom.\n\nEssayez donc de choisir
-    des mots susceptibles de leur plaire et creer le nom le plus badass!"
+  m_text: '*Bruit d''alarme*
+
+    "Sh*t! Je vais etre en retard au taf!"
+
+    Vous
+    enfilez votre veste, remplissez votre tasse et courrez vers le metro.
+
+
+    Votre
+    manager vous attrape le bras a peine passe la porte de l''open space.
+
+
+    "T''es
+    bien dans la vente, toi? Les trois clients sont la pour le jeu."
+
+
+    "Un jeu?
+    Quel jeu? Attendez, je..."
+
+
+    Le boss vous lance dans la salle de reunion,
+    face aux trois businessmen.
+
+
+    Il va falloir improviser un nom a l''arrache
+    si vous voulez cloturer fissa!
+
+
+    Vous allez devoir composer le nom de jeu
+    le plus cool et le plus long jamais imagine afin d''impressioner les distributeurs
+    de jeux de Racing, Versus Fighting et Plateforme.
+
+
+    Vous aurez un temps tres
+    limite pour selectionner un des 3 mots qui influenceront l''avis des businessmen.
+    Le jeu s''arrete quand un des 3 clients a perdu tout interet pour le nom.
+
+
+    Essayez
+    donc de choisir des mots susceptibles de leur plaire et creer le nom le plus
+    badass!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5b9aea74d9f5ee942ac7570a91960d2d, type: 2}
   m_sharedMaterial: {fileID: -7483707411553772051, guid: 5b9aea74d9f5ee942ac7570a91960d2d, type: 2}
@@ -609,8 +638,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

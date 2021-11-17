@@ -181,7 +181,7 @@ public class Controller : MonoBehaviour
             SoundController.instance.voice.PlayOneShot(sound);
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.25f);
         
         var racingLifeTemp = racingLife;
         var racingLifeSum = racingLifeTemp + word.racingValue - decrement;
