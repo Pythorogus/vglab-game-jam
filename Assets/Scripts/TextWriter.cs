@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class TextWriter : MonoBehaviour
 {
-    float timer = 0.025f;
+    float timer = 0.0125f;
     string[] texts;
     int actualString = 0;
     TMPro.TextMeshProUGUI tmp;
     private IEnumerator writeRoutine;
     bool writing = false;
+    public GameObject buttonStart;
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +44,11 @@ public class TextWriter : MonoBehaviour
                 }
                 tmp.text = texts[actualString];
                 writing = false;
+            }
+
+            if (actualString == texts.Length) {
+                GameObject.Find("TextSuite").SetActive(false);
+                buttonStart.SetActive(true);
             }
         }
     }
