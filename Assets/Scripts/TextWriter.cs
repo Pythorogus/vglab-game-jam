@@ -44,11 +44,10 @@ public class TextWriter : MonoBehaviour
                 }
                 tmp.text = texts[actualString];
                 writing = false;
-            }
-
-            if (actualString == texts.Length) {
-                GameObject.Find("TextSuite").SetActive(false);
-                buttonStart.SetActive(true);
+                if (actualString+1 == texts.Length) {
+                    GameObject.Find("TextSuite").SetActive(false);
+                    buttonStart.SetActive(true);
+                }
             }
         }
     }
@@ -69,5 +68,9 @@ public class TextWriter : MonoBehaviour
             yield return new WaitForSeconds(timer);
         }
         writing = false;
+        if (actualString+1 == texts.Length) {
+            GameObject.Find("TextSuite").SetActive(false);
+            buttonStart.SetActive(true);
+        }
     }
 }
